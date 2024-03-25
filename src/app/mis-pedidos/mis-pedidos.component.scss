@@ -1,0 +1,69 @@
+.vertical-padding {
+    padding-top: 10px
+  }
+
+  .table-title {
+    font-family: sans;
+    font-size: 21pt;
+  }
+
+  .offer-block {
+    display: flex;
+    width: inherit;
+    background-color: rgba(255, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    height: 50px;
+    width: 60px;
+  }
+
+  .cpedidos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tpedidos {
+    width: 90%;
+    border-collapse: collapse;
+  }
+
+  .tpedidos td,
+  th {
+    border: 1px solid #dddddd;
+    font-size: 15pt;
+    text-align: left;
+    padding: 8px;
+  }
+
+  .tpedidos tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #FFFFFF;
+  }
+
+  li {
+    float: left;
+  }
+
+  li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+    font-family: verdana
+  }
+
+  li a:hover {
+    background-color: #F6FFFE
+  }
