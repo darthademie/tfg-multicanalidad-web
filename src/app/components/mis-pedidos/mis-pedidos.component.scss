@@ -1,3 +1,8 @@
+  $color-UPM: rgba(28, 154, 165, 0.9);
+  $default-table-color: #dddddd;
+  $table-border: 3px;
+  $button-border: 2px;
+  
   .table-title {
     font-family: sans;
     font-size: 21pt;
@@ -6,7 +11,7 @@
   .offer-block {
     display: flex;
     width: inherit;
-    background-color: rgba(28, 154, 165, 0.9);
+    background-color: $color-UPM;
     align-items: center;
     justify-content: center;
   }
@@ -32,12 +37,41 @@
 
   .tpedidos td,
   th {
-    border: 1px solid #dddddd;
+    border: $table-border solid #dddddd;
     font-size: 15pt;
-    text-align: left;
+    text-align: center;
     padding: 8px;
   }
 
+  .tpedidos td.button-tabla {
+    text-align: center;
+    vertical-align: middle;
+  }
+
   .tpedidos tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: $default-table-color;
+  }
+
+  .button {
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+  
+  .details-button {
+    background-color: white; 
+    color: black; 
+    border: $button-border solid $color-UPM;
+  }
+  
+  .details-button:hover {
+    background-color: $color-UPM;
+    color: white;
   }

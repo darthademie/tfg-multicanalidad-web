@@ -22,6 +22,12 @@
                 <tr>
                     <td>{{ item.nombre }}</td>
                     <td>{{ item.descripcion }}</td>
+                    <td class="button-tabla">
+                        <button 
+                        class="button details-button button-tabla" 
+                        type="button"
+                        (click)="verDetalles(item.id)">Ver detalles</button>
+                    </td>
                 </tr>
             </ng-container>
         </tbody>
