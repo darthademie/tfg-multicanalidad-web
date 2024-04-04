@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ref, set, onValue } from 'firebase/database'
-import { db } from '../../environments/environment';
+import { db } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
-import { HorizontalMenuComponent } from '../common/horizontal-menu/horizontal-menu.component';
+import { HorizontalMenuComponent } from '../../common/horizontal-menu/horizontal-menu.component';
 
 @Component({
   selector: 'app-mis-pedidos',
