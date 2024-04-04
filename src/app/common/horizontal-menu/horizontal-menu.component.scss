@@ -1,0 +1,44 @@
+.horizontal-menu {
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  
+ .horizontal-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #FFFFFF;
+  }
+
+.horizontal-menu li {
+    float: left;
+  }
+
+.horizontal-menu li a {
+    display: block; /* Hace que el enlace sea un bloque para que pueda tener dimensiones */
+    position: relative; /* Establece el posicionamiento relativo para alinear la imagen del logo dentro del enlace */
+    color: black;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+    font-family: verdana
+  }
+
+  .horizontal-menu li a img {
+    position: absolute; /* Establece el posicionamiento absoluto para la imagen dentro del contenedor */
+    top: 0; /* Alinea la parte superior de la imagen con la parte superior del contenedor */
+    left: 50%; /* Desplaza la imagen a la mitad del contenedor horizontalmente */
+    transform: translateX(-50%); /* Corrige el desplazamiento horizontal para centrar la imagen */
+    height: 50px;
+    width: 60px;
+  }
+
+.horizontal-menu li a:not(.logo-link):hover {
+    background-color: #F6FFFE
+  }
+
+.horizontal-menu li .logo-link {
+    height: 30px;
+    width: 76px;
+}

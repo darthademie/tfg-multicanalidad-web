@@ -1,62 +1,30 @@
-<!DOCTYPE html>
-<html>
+<div class="offer-block">
 
-<head>
-    <title> teleUPM </title>
-</head>
+    <pre>🌺 HASTA EL <strong> 30% DE DESCUENTO </strong> EN TODA LA WEB | HASTA EL 21 DE JULIO A LAS 23:59H. 🌺</pre>
 
-<body>
+</div>
 
-    <div class="offer-block">
+<app-horizontal-menu></app-horizontal-menu>
 
-        <p style="text-align: center; font-family: 'Montserrat', sans-serif; font-weight: normal;"><span
-                style="color: #ffffff;"><span style="font-size: 10pt;">🌺 HASTA EL <strong>30% DE DESCUENTO</strong> EN
-                    TODA LA
-                    WEB | HASTA EL 21 DE JULIO A LAS 23:59H. 🌺</span></span></p>
+<div class="cpedidos">
 
-    </div>
-
-    <div class="vertical-padding">
-
-        <ul>
-            <li><a href="#home">
-                    <img class="logo"
-                        src="https://th.bing.com/th/id/R.83a1574080b5058da4235f9cf12899c7?rik=s8vSADIMkgPKAQ&pid=ImgRaw&r=0"
-                        alt="logoServicioUPM">
-                </a></li>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#news">Noticias</a></li>
-            <li><a href="#contact">Contacto</a></li>
-            <li><a href="#about">About</a></li>
-        </ul>
-
-    </div>
-
-    <div class="cpedidos">
-
-        <table class="tpedidos">
-            <caption><span class="table-title">Mis pedidos</span></caption>
+    <table class="tpedidos">
+        <caption><span class="table-title">Mis pedidos<br><br></span></caption>
+        <thead>
             <tr>
-                <th>Nombre Pedido</th>
-                <th>Descripción</th>
-                <th>Ver</th>
+            <th>Nombre Pedido</th>
+            <th>Descripción</th>
+            <th>Ver</th>
             </tr>
-            <tr>
-                <td>Pedido 1</td>
-                <td>Pedido chulo</td>
-            </tr>
-            <tr>
-                <td>Pedido 2</td>
-                <td>Pedido chulo</td>
-            </tr>
-            <tr>
-                <td>Pedido 3</td>
-                <td>Pedido chulo</td>
-            </tr>
-        </table>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let item of pedidos">
+                <tr>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.descripcion }}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
 
-    </div>
-
-</body>
-
-</html>
+</div>
