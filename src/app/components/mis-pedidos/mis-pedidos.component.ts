@@ -22,15 +22,19 @@ export class MisPedidosComponent {
 
   pedidos: any[] = [];
 
+  audioButtonDetalles = new Audio("/assets/sounds/buttonVerDetalles.mp3");
+
   ngOnInit(): void {
     const pedidosRef = ref(db, 'pedidos');
     onValue(pedidosRef, (snapshot) => {
       this.pedidos = snapshot.val().filter((pedido: null) => pedido !== null);
       console.log('Pedidos actualizados:', this.pedidos);
     });
+    this.audioButtonDetalles.load();
   }
 
   verDetalles(Id: number): void {
+    this.audioButtonDetalles.play();
     this.router.navigate([config.detallespedido.name], { queryParams: { id: Id } });
   }
 
