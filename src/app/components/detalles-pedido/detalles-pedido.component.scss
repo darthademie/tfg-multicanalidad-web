@@ -1,0 +1,80 @@
+$color-UPM: rgba(28, 154, 165, 0.9);
+$color-UPM-light: rgba(28, 154, 190, 0.4);
+$default-table-color: #dddddd;
+$table-border: 3px;
+
+.cdetalles {
+	display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detalles {
+    width: wrap;
+    height: wrap;
+    border: 8px solid $color-UPM;
+    border-radius: 10px; /* Radio de las esquinas */
+    text-align: left;
+    font-size: xx-large;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 70px;
+    padding-left: 30px; /* Añade relleno para que el contenido no se pegue al borde */
+    padding-right: 30px; /* Añade relleno para que el contenido no se pegue al borde */
+    padding-bottom: 70px;
+}
+
+.contenedor-pedido {
+    width: inherit;
+    height: inherit;
+    margin: auto 0px; /* Centra el contenedor horizontalmente */
+  }
+  
+  .barra-progreso {
+    position: relative; /* Establece el contexto de posición */
+  }
+  
+  .estado-pedido {
+    position: relative; /* Establece el contexto de posición */
+    display: flex;
+    align-items: center;
+    padding: 10px 1px; /* Espaciado interno */
+  }
+  
+  .vineta {
+    position: relative; /* Establece la posición relativa para las viñetas */
+    display: inline-block;
+    width: 15px; /* Ancho de las viñetas */
+    height: 15px; /* Altura de las viñetas */
+    background-color: transparent; /* Color de fondo de las viñetas */
+    border: 2px solid green; /* Borde de las viñetas */
+    border-radius: 4px; /* Borde redondeado de las viñetas */
+    margin-right: 10px;
+    z-index: 0;
+  }
+
+  .texto-estado {
+    max-width: 600px; /* Ajusto el ancho máximo a 600px para la parte del texto para que el contenido se ajuste a la pantalla de escritorio */
+    overflow-wrap: break-word; /* Divide las palabras que son más largas que el ancho disponible */
+    white-space: pre-wrap; /* Mantiene los saltos de línea manuales y permite el ajuste automático del texto */
+  }
+  
+  .estado-pedido.completado .vineta
+   {
+    background-color: aquamarine; /* Cambia el color de fondo de las viñetas para los estados completados y activos */
+  }
+  
+  .estado-pedido.activo .vineta  {
+    background-color: rgba(28, 154, 165, 0.4); /* Cambia el color de fondo de las viñetas para los estados completados y activos */
+  }
+  
+  .barra-progreso::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1px; /* Ajusta la posición de la barra de progreso */
+    width: 6px; /* Ancho de la barra de progreso */
+    height: 100%; /* Altura de la barra de progreso */
+    border-radius: 2px;
+    background-color: green; /* Color de la barra de progreso */
+    z-index: 1;
+  }

@@ -1,5 +1,6 @@
   $color-UPM: rgba(28, 154, 165, 0.9);
-  $default-table-color: #dddddd;
+  $default-table-cell-color: #eeeeee;
+  $default-table-border-color: #dddddd;
   $table-border: 3px;
   $button-border: 2px;
   
@@ -37,7 +38,7 @@
 
   .tpedidos td,
   th {
-    border: $table-border solid #dddddd;
+    border: $table-border solid $default-table-border-color;
     font-size: 15pt;
     text-align: center;
     padding: 8px;
@@ -49,7 +50,7 @@
   }
 
   .tpedidos tr:nth-child(even) {
-    background-color: $default-table-color;
+    background-color: $default-table-cell-color;
   }
 
   .button {
