@@ -4,11 +4,31 @@
 	<div class="detalles">
         <div class="contenedor-pedido">
             <div class="barra-progreso">
-              <div class="estado-pedido"><span class="vineta"></span><span class="texto-estado">Entregado</span></div>
-              <div class="estado-pedido"><span class="vineta"></span><span class="texto-estado">En reparto</span></div>
-              <div class="estado-pedido"><span class="vineta"></span><span class="texto-estado">En el centro de destino</span></div>
-              <div class="estado-pedido activo"><span class="vineta vineta-rellena"></span>Enviado<span class="texto-estado"></span></div>
-              <div class="estado-pedido completado"><span class="vineta vineta-rellena"></span><span class="texto-estado">Pedido Recibido</span></div>
+              <div 
+              [ngClass]="{ 'estado-pedido': true, activo: isEstadoActivo(estadoPedido.Entregado), completado: isEstadoCompletado(estadoPedido.Entregado) }"><span 
+              [ngClass]="{ vineta: true, 'vineta-rellena': isEstadoCompletado(estadoPedido.Entregado) || isEstadoActivo(estadoPedido.Entregado) }"></span><span 
+                class="texto-estado">Entregado</span><span 
+                class="texto-estado descripcion-estado">{{ detallesPedido.estado[estadoPedido.Entregado].descripcion }}</span></div>
+              <div 
+              [ngClass]="{ 'estado-pedido': true, activo: isEstadoActivo(estadoPedido.EnReparto), completado: isEstadoCompletado(estadoPedido.EnReparto) }"><span 
+              [ngClass]="{ vineta: true, 'vineta-rellena': isEstadoCompletado(estadoPedido.EnReparto) || isEstadoActivo(estadoPedido.EnReparto) }"></span><span 
+                class="texto-estado">En reparto</span><span 
+                class="texto-estado descripcion-estado">{{ detallesPedido.estado[estadoPedido.EnReparto].descripcion }}</span></div>
+              <div 
+              [ngClass]="{ 'estado-pedido': true, activo: isEstadoActivo(estadoPedido.EnDestino), completado: isEstadoCompletado(estadoPedido.EnDestino) }"><span 
+              [ngClass]="{ vineta: true, 'vineta-rellena': isEstadoCompletado(estadoPedido.EnDestino) || isEstadoActivo(estadoPedido.EnDestino) }"></span><span 
+                class="texto-estado">En el centro de destino</span><span 
+                class="texto-estado descripcion-estado">{{ detallesPedido.estado[estadoPedido.EnDestino].descripcion }}</span></div>
+              <div 
+              [ngClass]="{ 'estado-pedido': true, activo: isEstadoActivo(estadoPedido.Enviado), completado: isEstadoCompletado(estadoPedido.Enviado) }"><span 
+              [ngClass]="{ vineta: true, 'vineta-rellena': isEstadoCompletado(estadoPedido.Enviado) || isEstadoActivo(estadoPedido.Enviado) }"></span><span 
+                class="texto-estado">Enviado</span><span 
+                class="texto-estado descripcion-estado">{{ detallesPedido.estado[estadoPedido.Enviado].descripcion }}</span></div>
+              <div 
+              [ngClass]= "{ 'estado-pedido': true, activo: isEstadoActivo(estadoPedido.Recibido), completado: isEstadoCompletado(estadoPedido.Recibido) }"><span 
+              [ngClass]="{ vineta: true, 'vineta-rellena': isEstadoCompletado(estadoPedido.Recibido) || isEstadoActivo(estadoPedido.Recibido) }"></span><span 
+                class="texto-estado">Pedido Recibido</span><span 
+                class="texto-estado descripcion-estado">{{ detallesPedido.estado[estadoPedido.Recibido].descripcion }}</span></div>
             </div>
         </div>
     </div>

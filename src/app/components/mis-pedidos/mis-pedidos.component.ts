@@ -4,7 +4,7 @@ import { db } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { HorizontalMenuComponent } from '../../common/horizontal-menu/horizontal-menu.component';
 import { Router } from '@angular/router';
-import { config } from '../../models/page-config';
+import { config } from '../../../config/page-config';
 
 @Component({
   selector: 'app-mis-pedidos',
@@ -25,8 +25,8 @@ export class MisPedidosComponent {
   audioButtonDetalles = new Audio("/assets/sounds/buttonVerDetalles.mp3");
 
   ngOnInit(): void {
-    const pedidosRef = ref(db, 'pedidos');
-    onValue(pedidosRef, (snapshot) => {
+    const pedidoRef = ref(db, 'pedidos');
+    onValue(pedidoRef, (snapshot) => {
       this.pedidos = snapshot.val().filter((pedido: null) => pedido !== null);
       console.log('Pedidos actualizados:', this.pedidos);
     });

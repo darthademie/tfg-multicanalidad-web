@@ -4,7 +4,7 @@ import { MisPedidosComponent } from './components/mis-pedidos/mis-pedidos.compon
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './components/login/login.component';
 import { DetallesPedidoComponent } from './components/detalles-pedido/detalles-pedido.component';
-import { config } from './models/page-config';
+import { config } from '../config/page-config';
 
 export const routes: Routes = [{ path: '', component: AppComponent },
 { path: config.login.route, component: LoginComponent },

@@ -1,4 +1,4 @@
-import { PagesConfig } from "./pages-config.model";
+import { PagesConfig } from "../app/models/pages-config.model";
 
 export let config: PagesConfig = {
     login: {

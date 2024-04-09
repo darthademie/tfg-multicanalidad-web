@@ -1,5 +1,5 @@
 $color-UPM: rgba(28, 154, 165, 0.9);
-$color-UPM-light: rgba(28, 154, 190, 0.4);
+$color-UPM-light: rgba(28, 154, 240, 0.25);
 $default-table-color: #dddddd;
 $table-border: 3px;
 
@@ -57,6 +57,14 @@ $table-border: 3px;
     overflow-wrap: break-word; /* Divide las palabras que son más largas que el ancho disponible */
     white-space: pre-wrap; /* Mantiene los saltos de línea manuales y permite el ajuste automático del texto */
   }
+
+  .texto-estado.descripcion-estado {
+    text-align: center;
+    padding-top: 5px;
+    padding-left: 10px;
+    font-size: medium;
+    color: #999999;
+  }
   
   .estado-pedido.completado .vineta
    {
@@ -64,7 +72,15 @@ $table-border: 3px;
   }
   
   .estado-pedido.activo .vineta  {
-    background-color: rgba(28, 154, 165, 0.4); /* Cambia el color de fondo de las viñetas para los estados completados y activos */
+    background-color: $color-UPM-light; /* Cambia el color de fondo de las viñetas para los estados completados y activos */
+  }
+
+  .estado-pedido.activo .texto-estado  {
+    color: blue;
+  }
+
+  .estado-pedido.activo .texto-estado.descripcion-estado  {
+    color: #999999;
   }
   
   .barra-progreso::before {
