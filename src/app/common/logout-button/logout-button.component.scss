@@ -1,0 +1,24 @@
+ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #FFFFFF;
+    margin-right: 70px;
+  }
+
+ul li {
+    display: block; /* Hace que el enlace sea un bloque para que pueda tener dimensiones */
+    position: relative; /* Establece el posicionamiento relativo para alinear la imagen del logo dentro del enlace */
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+  }
+
+ul :first-child {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 15px;
+}

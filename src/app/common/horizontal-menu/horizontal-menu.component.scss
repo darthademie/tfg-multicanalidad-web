@@ -1,9 +1,12 @@
 .horizontal-menu {
-    padding-top: 20px;
-    padding-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
   
  .horizontal-menu ul {
+    display: inline-block;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -17,7 +20,7 @@
 
 .horizontal-menu li a {
     display: block; /* Hace que el enlace sea un bloque para que pueda tener dimensiones */
-    position: relative; /* Establece el posicionamiento relativo para alinear la imagen del logo dentro del enlace */
+    position: relative; /* Establece el posicionamiento relativo para alinear el texto dentro del enlace */
     color: black;
     text-align: center;
     padding: 16px;

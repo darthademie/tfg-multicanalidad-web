@@ -5,6 +5,10 @@ export let config: PagesConfig = {
 		  name: 'login',
 		  route: 'login'
     },
+    register: {
+		  name: 'register',
+		  route: 'register'
+    },
     mispedidos: {
       name: 'mispedidos',
 		  route: 'mispedidos'

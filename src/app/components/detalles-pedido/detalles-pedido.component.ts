@@ -6,11 +6,12 @@ import { onValue, ref } from 'firebase/database';
 import { db } from '../../../environments/environment';
 import { CodEstadoPedido } from '../../shared/enum/cod-estado-pedido.enum';
 import { EstadoPedido } from '../../shared/enum/estado-pedido.enum';
+import { LogoutButtonComponent } from '../../common/logout-button/logout-button.component';
 
 @Component({
   selector: 'app-detalles-pedido',
   standalone: true,
-  imports: [CommonModule, HorizontalMenuComponent],
+  imports: [CommonModule, HorizontalMenuComponent, LogoutButtonComponent],
   templateUrl: './detalles-pedido.component.html',
   styleUrl: './detalles-pedido.component.scss'
 })

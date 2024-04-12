@@ -13,8 +13,11 @@
     display: flex;
     width: inherit;
     background-color: $color-UPM;
+    color: white;
     align-items: center;
     justify-content: center;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
   }
 
   .offer-block > pre {
@@ -23,6 +26,8 @@
     font-weight: normal;
     color: #ffffff;
     font-size: 10pt;
+    padding: 16px;
+    margin: 0 !important;
   }
 
   .cpedidos {
@@ -34,6 +39,11 @@
   .tpedidos {
     width: 90%;
     border-collapse: collapse;
+    caption-side: top;
+  }
+
+  .tpedidos caption {
+    padding-bottom: 0px;
   }
 
   .tpedidos td,
