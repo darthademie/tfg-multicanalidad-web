@@ -14,6 +14,7 @@ import { HorizontalMenuComponent } from '../../../common/horizontal-menu/horizon
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  
   title = 'tfg-multicanalidad-web';
 
   formLogin: FormGroup;
@@ -35,6 +36,7 @@ export class LoginComponent {
     this.userService.login(this.formLogin.value)
       .then(response => {
         console.log(response);
+        this.router.navigate([config.mispedidos.route]);
       })
       .catch(error => console.log(error));
   }
@@ -47,4 +49,5 @@ export class LoginComponent {
       })
       .catch((error: any) => console.log(error))
   }
+
 }

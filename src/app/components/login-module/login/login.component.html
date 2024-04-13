@@ -1,15 +1,59 @@
-<app-horizontal-menu></app-horizontal-menu>
+<div class="login">
+    <div class="container login w-75 pt-5 rounded shadow">
+        <div class="row align-items-stretch">
+            <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"></div>
+            <div class="col bg-white p-5 rounded-end">
+                <div class="text-center">
+                    <img src="assets/images/logo.jpg" width="128" alt="logo UPM">
+                </div>
+                <h2 class="fw-bold text-center py-5">Bienvenido</h2>
 
-<h2>Login de usuario</h2>
-<form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="text" class="form-control" formControlName="email">
+                <!-- Login -->
+
+                <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" placeholder="xxxxxx@dominio.com" name="email" formControlName="email">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" placeholder="******" name="password" formControlName="password">
+                    </div>
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" name="connected" class="form-check-input">
+                        <label for="connected" class="form-check-label">Mantener la sesión iniciada</label>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                    </div>
+                    <div class="my-3">
+                        <span>¿No tienes cuenta? <a href="/register">Regístrate</a></span> <br>
+                        <span>O bien&nbsp;<a href="#">Recupera tu contraseña</a></span>
+                    </div>
+                </form>
+
+                <!-- Login con redes sociales -->
+
+                <div class="container w-100 my-5">
+                    <div class="row text-center">
+                    <div class="col-12">Iniciar Sesión con Google</div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-outline-danger w-100 my-1" (click)="onClick()">
+                            <div class="row align-items-center">
+                                <div class="col-2 d-none d-md-block">
+                                    <img src="assets/images/gl.png" width="32" alt="Google logo">
+                                </div>
+                                <div class="col-12 col-md-10 text-center">
+                                    Google
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-control" formControlName="password">
-    </div>
-    <input type="submit" value="Enviar">
-</form>
-<button class="btn btn-info" (click)="onClick()">Login With Google</button>
+</div>

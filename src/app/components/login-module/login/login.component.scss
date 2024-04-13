@@ -1,0 +1,12 @@
+$color-UPM: rgba(28, 154, 165, 0.9);
+$color-UPM-light: rgba(28, 154, 240, 0.25);
+
+.login {
+    background: $color-UPM;
+    background-color: linear-gradient(to right, $color-UPM-light, aquamarine);
+}
+
+.bg {
+    background-image: url('../../../../assets/images/bglr.jpg');
+    background-position: center center;
+}
