@@ -1,9 +1,9 @@
 $color-UPM: rgba(28, 154, 165, 0.9);
-$color-UPM-light: rgba(28, 154, 240, 0.25);
+$color-UPM-medium: rgba(28, 154, 190, 0.7);
 
 .login {
     background: $color-UPM;
-    background-color: linear-gradient(to right, $color-UPM-light, aquamarine);
+    background: linear-gradient(to right, $color-UPM-medium, $color-UPM);
 }
 
 .bg {
