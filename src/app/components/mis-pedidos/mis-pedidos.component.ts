@@ -6,6 +6,7 @@ import { HorizontalMenuComponent } from '../../common/horizontal-menu/horizontal
 import { Router } from '@angular/router';
 import { config } from '../../../config/page-config';
 import { LogoutButtonComponent } from '../../common/logout-button/logout-button.component';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-mis-pedidos',
@@ -18,7 +19,8 @@ import { LogoutButtonComponent } from '../../common/logout-button/logout-button.
 export class MisPedidosComponent {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   pedidos: any[] = [];
@@ -26,7 +28,7 @@ export class MisPedidosComponent {
   audioButtonDetalles = new Audio("/assets/sounds/buttonVerDetalles.mp3");
 
   ngOnInit(): void {
-    const pedidoRef = ref(db, 'pedidos');
+    const pedidoRef = ref(db, this.userService.getUser()?.uid + '/pedidos');
     onValue(pedidoRef, (snapshot) => {
       this.pedidos = snapshot.val().filter((pedido: null) => pedido !== null);
       console.log('Pedidos actualizados:', this.pedidos);

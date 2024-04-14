@@ -7,6 +7,8 @@ import { db } from '../../../environments/environment';
 import { CodEstadoPedido } from '../../shared/enum/cod-estado-pedido.enum';
 import { EstadoPedido } from '../../shared/enum/estado-pedido.enum';
 import { LogoutButtonComponent } from '../../common/logout-button/logout-button.component';
+import { UserService } from '../../shared/services/user.service';
+import { StringOrNull } from '../../shared/types/types';
 
 @Component({
   selector: 'app-detalles-pedido',
@@ -18,7 +20,8 @@ import { LogoutButtonComponent } from '../../common/logout-button/logout-button.
 export class DetallesPedidoComponent {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   estadoPedido = EstadoPedido;
@@ -26,8 +29,9 @@ export class DetallesPedidoComponent {
 
   ngOnInit(): void {
     const params: URLSearchParams = new URLSearchParams(this.router.url.split('?')[1]);
-    const id = params.get('id');
-    const pedidosRef = ref(db, 'pedidos/' + id);
+    let idPedido: StringOrNull = params.get('id');
+    idPedido = (parseInt(idPedido as string) - 1).toString();
+    const pedidosRef = ref(db, this.userService.getUser()?.uid + '/pedidos/'+ idPedido);
     onValue(pedidosRef, (snapshot) => {
       this.detallesPedido = snapshot.val();
       console.log('Detalles de pedido actualizados:', this.detallesPedido);
