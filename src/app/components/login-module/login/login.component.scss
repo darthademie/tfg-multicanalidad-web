@@ -1,11 +1,3 @@
-$color-UPM: rgba(28, 154, 165, 0.9);
-$color-UPM-medium: rgba(28, 154, 190, 0.7);
-
-.login {
-    background: $color-UPM;
-    background: linear-gradient(to right, $color-UPM-medium, $color-UPM);
-}
-
 .bg {
     background-image: url('../../../../assets/images/bglr.jpg');
     background-position: center center;

@@ -1,15 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
 import { Router } from '@angular/router';
 import { config } from '../../../../config/page-config';
-import { HorizontalMenuComponent } from '../../../common/horizontal-menu/horizontal-menu.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HorizontalMenuComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -18,10 +17,10 @@ export class LoginComponent {
   title = 'tfg-multicanalidad-web';
 
   formLogin: FormGroup;
-
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.formLogin = new FormGroup({
       email: new FormControl(),
@@ -30,6 +29,11 @@ export class LoginComponent {
   }
 
   ngOnInit(): void {
+    this.document.body.classList.add('show-component-background');
+  }
+
+  ngOnDestroy(): void {
+    this.document.body.classList.remove('show-component-background');
   }
 
   onSubmit() {

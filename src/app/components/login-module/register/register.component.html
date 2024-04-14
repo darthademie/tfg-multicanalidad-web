@@ -1,14 +1,35 @@
-<app-horizontal-menu></app-horizontal-menu>
+    <div class="container w-75 mt-5 rounded shadow">
+        <div class="row align-items-stretch">
+            <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"></div>
+            <div class="col bg-white p-5 rounded-end">
+                <div class="text-center">
+                    <img src="assets/images/logo.jpg" width="128" alt="logo UPM">
+                </div>
+                <h2 class="fw-bold text-center py-5">¡Regístrate!</h2>
 
-<h2>Registro de usuario</h2>
-<form [formGroup]="formReg" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="text" class="form-control" formControlName="email">
+                <!-- Formulario de Registro -->
+
+                <form [formGroup]="formReg" (ngSubmit)="onSubmit()">
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" placeholder="xxxxxx@dominio.com" name="email" formControlName="email">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" placeholder="******" name="password" formControlName="password">
+                    </div>
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" name="connected" class="form-check-input">
+                        <label for="connected" class="form-check-label">Mantener la sesión iniciada</label>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Enviar registro</button>
+                    </div>
+                    <div class="my-3">
+                        <span>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></span>
+                        <br>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-control" formControlName="password">
-    </div>
-    <input type="submit" value="Enviar">
-</form>
