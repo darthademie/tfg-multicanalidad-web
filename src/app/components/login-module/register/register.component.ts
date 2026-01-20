@@ -28,11 +28,11 @@ export class RegisterComponent {
   }
 
   ngOnInit(): void {
-    this.document.body.classList.add('show-component-background');
+    
   }
 
   ngOnDestroy(): void {
-    this.document.body.classList.remove('show-component-background');
+    
   }
 
   onSubmit() {

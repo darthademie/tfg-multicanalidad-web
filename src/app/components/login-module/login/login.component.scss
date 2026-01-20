@@ -1,3 +1,11 @@
+@use 'variables' as v;
+
+:host {
+  display: block;
+  min-height: 100vh;     // Ocupa el 100% de la altura de la ventana (Viewport Height)
+  background: linear-gradient(to right, v.$color-UPM-medium, v.$color-UPM) !important;
+}
+
 .bg {
     background-image: url('../../../../assets/images/bglr.jpg');
     background-position: center center;

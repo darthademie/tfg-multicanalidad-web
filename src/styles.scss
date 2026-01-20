@@ -3,7 +3,9 @@
 $color-UPM: rgba(28, 154, 165, 0.9);
 $color-UPM-medium: rgba(28, 154, 190, 0.7);
 
-body.show-component-background {
-    background: $color-UPM;
-    background: linear-gradient(to right, $color-UPM-medium, $color-UPM);
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
