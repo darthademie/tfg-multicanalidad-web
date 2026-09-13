@@ -28,12 +28,15 @@ export class MisPedidosComponent {
   audioButtonDetalles = new Audio("/assets/sounds/buttonVerDetalles.mp3");
 
   ngOnInit(): void {
-    const pedidoRef = ref(db, this.userService.getUser()?.uid + '/pedidos');
-    onValue(pedidoRef, (snapshot) => {
+    const uid: string | undefined = this.userService.getUser()?.uid;
+    if (uid) {
+      const pedidosRef = ref(db, `usuarios/${uid}/pedidos`);
+      onValue(pedidosRef, (snapshot) => {
       this.pedidos = snapshot.val().filter((pedido: null) => pedido !== null);
       console.log('Pedidos actualizados:', this.pedidos);
     });
     this.audioButtonDetalles.load();
+    }
   }
 
   verDetalles(Id: number): void {

@@ -31,11 +31,14 @@ export class DetallesPedidoComponent {
     const params: URLSearchParams = new URLSearchParams(this.router.url.split('?')[1]);
     let idPedido: StringOrNull = params.get('id');
     idPedido = (parseInt(idPedido as string) - 1).toString();
-    const pedidosRef = ref(db, this.userService.getUser()?.uid + '/pedidos/'+ idPedido);
-    onValue(pedidosRef, (snapshot) => {
-      this.detallesPedido = snapshot.val();
-      console.log('Detalles de pedido actualizados:', this.detallesPedido);
-    });
+    const uid: string | undefined = this.userService.getUser()?.uid;
+    if (uid && idPedido) {
+        const pedidoRef = ref(db, `usuarios/${uid}/pedidos/${idPedido}`);
+        onValue(pedidoRef, (snapshot) => {
+          this.detallesPedido = snapshot.val();
+          console.log('Detalles de pedido actualizados:', this.detallesPedido);
+      });
+    }
   }
 
   isEstadoActivo(estadoPedido: number): boolean {
