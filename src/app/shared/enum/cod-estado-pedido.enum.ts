@@ -1,5 +1,5 @@
 export enum CodEstadoPedido {
-    EnEspera,
-    Completado,
-    Activo
+    EnEspera, // codEstado = 0;
+    Completado, // codEstado = 1;
+    Activo // codEstado = 2;
 }
