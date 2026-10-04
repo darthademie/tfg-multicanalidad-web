@@ -20,17 +20,19 @@
             </tr>
         </thead>
         <tbody>
-            <ng-container *ngFor="let item of pedidos">
+            <ng-container>
+                @for (item of pedidos | keyvalue; track item.key) {
                 <tr>
-                    <td>{{ item.nombre }}</td>
-                    <td>{{ item.descripcion }}</td>
+                    <td>{{ item.value.nombre }}</td>
+                    <td>{{ item.value.descripcion }}</td>
                     <td class="button-tabla">
                         <button 
                         class="button details-button button-tabla" 
                         type="button"
-                        (click)="verDetalles(item.id)">Ver detalles</button>
+                        (click)="verDetalles(item.key)">Ver detalles</button>
                     </td>
                 </tr>
+            }
             </ng-container>
         </tbody>
     </table>

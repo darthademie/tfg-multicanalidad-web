@@ -30,7 +30,6 @@ export class DetallesPedidoComponent {
   ngOnInit(): void {
     const params: URLSearchParams = new URLSearchParams(this.router.url.split('?')[1]);
     let idPedido: StringOrNull = params.get('id');
-    idPedido = (parseInt(idPedido as string) - 1).toString();
     const uid: string | undefined = this.userService.getUser()?.uid;
     if (uid && idPedido) {
         const pedidoRef = ref(db, `usuarios/${uid}/pedidos/${idPedido}`);

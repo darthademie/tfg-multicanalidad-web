@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { config } from '../../../config/page-config';
 import { LogoutButtonComponent } from '../../common/logout-button/logout-button.component';
 import { UserService } from '../../shared/services/user.service';
+import { Pedido } from '../../models/usuario-firebase.model';
 
 @Component({
   selector: 'app-mis-pedidos',
@@ -23,7 +24,7 @@ export class MisPedidosComponent {
     private userService: UserService
   ) {}
 
-  pedidos: any[] = [];
+  pedidos: Record<string, Pedido>;
 
   audioButtonDetalles = new Audio("/assets/sounds/buttonVerDetalles.mp3");
 
@@ -32,14 +33,14 @@ export class MisPedidosComponent {
     if (uid) {
       const pedidosRef = ref(db, `usuarios/${uid}/pedidos`);
       onValue(pedidosRef, (snapshot) => {
-      this.pedidos = snapshot.val().filter((pedido: null) => pedido !== null);
+      this.pedidos = snapshot.val() as Record<string, Pedido>;
       console.log('Pedidos actualizados:', this.pedidos);
     });
     this.audioButtonDetalles.load();
     }
   }
 
-  verDetalles(Id: number): void {
+  verDetalles(Id: string): void {
     this.audioButtonDetalles.play();
     this.router.navigate([config.detallespedido.name], { queryParams: { id: Id } });
   }
