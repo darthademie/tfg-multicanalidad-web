@@ -7,12 +7,16 @@ export interface PagesConfig {
 		  name: string;
 		  route: string;
     };
-    mispedidos: {
+    mis_pedidos: {
       name: string;
 		  route: string;
     };
-    detallespedido: {
+    detalles_pedido: {
       name: string;
 		  route: string;
     };
+    administracion_pedidos: {
+      name: string;
+		  route: string;
+    }
 }

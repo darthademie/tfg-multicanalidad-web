@@ -40,7 +40,7 @@ export class LoginComponent {
     this.userService.login(this.formLogin.value)
       .then(response => {
         console.log(response);
-        this.router.navigate([config.mispedidos.route]);
+        this.router.navigate([config.mis_pedidos.route]);
       })
       .catch(error => console.log(error));
   }
@@ -49,7 +49,7 @@ export class LoginComponent {
     this.userService.loginWithGoogle()
       .then((response: any) => {
         console.log(response);
-        this.router.navigate([config.mispedidos.route]);
+        this.router.navigate([config.mis_pedidos.route]);
       })
       .catch((error: any) => console.log(error))
   }

@@ -9,12 +9,16 @@ export let config: PagesConfig = {
 		  name: 'register',
 		  route: 'register'
     },
-    mispedidos: {
-      name: 'mispedidos',
-		  route: 'mispedidos'
+    mis_pedidos: {
+      name: 'misPedidos',
+		  route: 'mis_pedidos'
     },
-    detallespedido: {
+    detalles_pedido: {
       name: 'detallesPedido',
 		  route: 'detallesPedido'
+    },
+    administracion_pedidos: {
+      name: 'administracionPedidos',
+		  route: 'administracion_pedidos'
     }
 }

@@ -39,7 +39,7 @@ export class RegisterComponent {
     this.userService.register(this.formReg.value)
       .then(response => {
         console.log(response);
-        this.router.navigate([config.mispedidos.route]);
+        this.router.navigate([config.mis_pedidos.route]);
       })
       .catch(error => console.log(error));
   }
