@@ -40,9 +40,9 @@ export class MisPedidosComponent {
     }
   }
 
-  verDetalles(Id: string): void {
+  verDetalles(id_pedido: string): void {
     this.audioButtonDetalles.play();
-    this.router.navigate([config.detalles_pedido.name], { queryParams: { id: Id } });
+    this.router.navigate([config.detalles_pedido.name], { queryParams: { id_pedido: id_pedido } });
   }
 
 }

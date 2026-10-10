@@ -1,1 +1,65 @@
-<p>administracion-pedidos works!</p>
+<div class="offer-block">
+    <pre>🛡️ PANEL TÉCNICO DE ADMINISTRACIÓN | MODO PRIVILEGIADO 🛡️</pre>
+</div>
+
+<app-horizontal-menu>
+    <li style="list-style-type: none;"><app-logout-button></app-logout-button></li>
+</app-horizontal-menu>
+
+<div class="admin-container">
+    <div class="header-acciones">
+        <span class="table-title">Gestión Global de Pedidos</span>
+        <button class="button details-button" (click)="toggleFormulario()">
+            {{ mostrarFormulario ? 'Cancelar' : '+ Añadir Pedido' }}
+        </button>
+    </div>
+
+    <!-- Panel desplegable del formulario -->
+    @if (mostrarFormulario) {
+        <div class="formulario-admin">
+            <h3>Asignar nuevo dispositivo</h3>
+            <div class="form-group">
+                <input type="email" placeholder="Correo del usuario destino" [(ngModel)]="correoDestino" [disabled]="procesando">
+                <input type="text" placeholder="Nombre del dispositivo (Ej: Router, iPhone...)" [(ngModel)]="nuevoDispositivo" [disabled]="procesando">
+                <button class="button btn-accion" (click)="asignarPedido()" [disabled]="procesando || !correoDestino || !nuevoDispositivo">
+                    {{ procesando ? 'Procesando...' : 'Asignar Pedido' }}
+                </button>
+            </div>
+            @if (mensajeEstado) {
+                <p class="status-msg">{{ mensajeEstado }}</p>
+            }
+        </div>
+    }
+
+    <table class="tpedidos">
+        <thead>
+            <tr>
+                <th>Usuario (Destino)</th>
+                <th>Nombre Pedido</th>
+                <th>Descripción</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (pedido of pedidosGlobales; track pedido.idPedido) {
+                <tr>
+                    <td><strong>{{ pedido.identificadorUsuario }}</strong></td>
+                    <td>{{ pedido.nombre }}</td>
+                    <td>{{ pedido.descripcion }}</td>
+                    <td class="button-tabla">
+                        <button 
+                            class="button details-button button-tabla" 
+                            type="button"
+                            (click)="verDetalles(pedido.idPedido, pedido.uidUsuario)">
+                            Ver detalles
+                        </button>
+                    </td>
+                </tr>
+            } @empty {
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 20px;">No hay pedidos registrados en el sistema.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

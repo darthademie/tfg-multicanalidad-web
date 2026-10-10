@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/login-module/register/register.c
 import { canActivate, customClaims, redirectUnauthorizedTo } from '@angular/fire/auth-guard'
 import { map, pipe } from 'rxjs';
 import { AdministracionPedidosComponent } from './components/administracion-pedidos/administracion-pedidos.component';
+import { adminRole } from './shared/constants/defines';
 
 
 // ---- 1. DEFINIMOS LAS REGLAS DE ACCESO (GUARDS) ----
@@ -28,7 +29,7 @@ const userOnlyGuard = (): any => pipe(
     
     // Forzamos el tipado para evitar el error de índice
     const tokenClaims = claims as Record<string, any>;
-    return tokenClaims['admin'] === true ? [config.administracion_pedidos.route] : true;
+    return tokenClaims[adminRole] === true ? [config.administracion_pedidos.route] : true;
   })
 );
 
@@ -46,7 +47,7 @@ const adminOnlyGuard = (): any => pipe(
     }
     
     const tokenClaims = claims as Record<string, any>;
-    return tokenClaims['admin'] === true ? true : [config.mis_pedidos.route];
+    return tokenClaims[adminRole] === true ? true : [config.mis_pedidos.route];
   })
 );
 
@@ -77,7 +78,7 @@ export const routes: Routes = [
   { 
     path: config.detalles_pedido.route, 
     component: DetallesPedidoComponent, 
-    ...canActivate(userOnlyGuard)
+    ...canActivate(() => redirectUnauthorizedTo([config.login.route]))
   },
 
   // -- RUTAS EXCLUSIVAS PARA ADMINISTRADORES TECNICOS --

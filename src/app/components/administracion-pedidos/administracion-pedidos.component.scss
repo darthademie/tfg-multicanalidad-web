@@ -1,0 +1,148 @@
+$color-UPM: rgba(28, 154, 165, 0.9);
+$default-table-cell-color: #eeeeee;
+$default-table-border-color: #dddddd;
+$table-border: 3px;
+$button-border: 2px;
+
+.table-title {
+  font-family: sans-serif;
+  font-size: 21pt;
+}
+
+.offer-block {
+  display: flex;
+  width: inherit;
+  background-color: #333333; // Diferenciamos el color para que el admin sepa que está en otra zona
+  color: white;
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  
+  pre {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+    color: #ffffff;
+    font-size: 10pt;
+    padding: 16px;
+    margin: 0 !important;
+  }
+}
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 20px;
+}
+
+// Cabecera con título alineado a la izquierda y botón a la derecha
+.header-acciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+// Estilos del formulario de inyección
+.formulario-admin {
+  width: 90%;
+  background-color: $default-table-cell-color;
+  border: $table-border solid $color-UPM;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+
+  h3 {
+    margin-top: 0;
+    font-family: sans-serif;
+  }
+
+  .form-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    input {
+      flex: 1;
+      padding: 12px;
+      font-size: 12pt;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 250px;
+    }
+  }
+
+  .status-msg {
+    margin-top: 15px;
+    font-weight: bold;
+    color: $color-UPM;
+  }
+}
+
+// Estilos de tabla heredados
+.tpedidos {
+  width: 90%;
+  border-collapse: collapse;
+  
+  td, th {
+    border: $table-border solid $default-table-border-color;
+    font-size: 13pt; // Ligeramente más pequeño para acomodar el correo
+    text-align: center;
+    padding: 8px;
+  }
+
+  td.button-tabla {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  tr:nth-child(even) {
+    background-color: $default-table-cell-color;
+  }
+}
+
+// Botones generales
+.button {
+  border: none;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.details-button {
+  background-color: white; 
+  color: black; 
+  border: $button-border solid $color-UPM;
+  
+  &:hover {
+    background-color: $color-UPM;
+    color: white;
+  }
+}
+
+.btn-accion {
+  background-color: $color-UPM;
+  color: white;
+  border: $button-border solid $color-UPM;
+  font-weight: bold;
+
+  &:hover:not(:disabled) {
+    background-color: darken($color-UPM, 10%);
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    border-color: #999999;
+    cursor: not-allowed;
+  }
+}
