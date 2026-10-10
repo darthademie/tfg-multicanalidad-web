@@ -20,7 +20,18 @@
             <h3>Asignar nuevo dispositivo</h3>
             <div class="form-group">
                 <input type="email" placeholder="Correo del usuario destino" [(ngModel)]="correoDestino" [disabled]="procesando">
-                <input type="text" placeholder="Nombre del dispositivo (Ej: Router, iPhone...)" [(ngModel)]="nuevoDispositivo" [disabled]="procesando">
+                
+                <!-- Sustituido el input de texto por el menú desplegable (select) -->
+                <select [(ngModel)]="nuevoDispositivo" [disabled]="procesando">
+                    <option value="" disabled selected>Selecciona un dispositivo...</option>
+                    @for (disp of dispositivosDisponibles; track disp.id) {
+                        <option [value]="disp.nombre">{{ disp.nombre }}</option>
+                    }
+                </select>
+
+                <!-- Nuevo input opcional para las opciones de personalización -->
+                <input type="text" placeholder="Opciones de personalización (Opcional)" [(ngModel)]="opcionesPersonalizacion" [disabled]="procesando">
+                
                 <button class="button btn-accion" (click)="asignarPedido()" [disabled]="procesando || !correoDestino || !nuevoDispositivo">
                     {{ procesando ? 'Procesando...' : 'Asignar Pedido' }}
                 </button>

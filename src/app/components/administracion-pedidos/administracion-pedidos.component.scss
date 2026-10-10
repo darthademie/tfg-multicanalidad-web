@@ -67,13 +67,25 @@ $button-border: 2px;
     gap: 15px;
     flex-wrap: wrap;
 
-    input {
-      flex: 1;
+    // Aplicar el mismo estilo base tanto a los inputs como al select
+    input, select {
       padding: 12px;
       font-size: 12pt;
       border: 1px solid #ccc;
       border-radius: 4px;
       min-width: 250px;
+      font-family: inherit; // Para que herede la fuente de la página
+    }
+
+    // Definimos las proporciones de Flexbox
+    input {
+      flex: 1.4;
+    }
+
+    select {
+      flex: 1; // El select ocupa 1.5 porciones (será un 50% más ancho)
+      cursor: pointer; // Añadimos el cursor de la manita para mejor UX
+      background-color: white; // Evita el fondo gris por defecto de algunos navegadores
     }
   }
 
