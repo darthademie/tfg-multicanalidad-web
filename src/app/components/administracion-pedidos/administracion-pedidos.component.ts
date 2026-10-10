@@ -18,7 +18,6 @@ interface PedidoGlobal extends Pedido {
   identificadorUsuario: string;
 }
 
-// Nueva interfaz para tipar la lista de dispositivos del select
 interface Dispositivo {
   id: string;
   nombre: string;
@@ -34,12 +33,12 @@ interface Dispositivo {
 export class AdministracionPedidosComponent implements OnInit {
 
   pedidosGlobales: PedidoGlobal[] = [];
-  dispositivosDisponibles: Dispositivo[] = []; // Array para llenar el <select>
+  dispositivosDisponibles: Dispositivo[] = []; 
   mostrarFormulario: boolean = false;
 
   correoDestino: string = '';
-  nuevoDispositivo: string = ''; // Ahora guardará el valor seleccionado del menú
-  opcionesPersonalizacion: string = ''; // Nuevo campo de texto
+  idDispositivo: string = '';
+  opcionesPersonalizacion: string = ''; 
   mensajeEstado: string = '';
   procesando: boolean = false;
 
@@ -56,7 +55,7 @@ export class AdministracionPedidosComponent implements OnInit {
     if (tecnicoUid) {
       this.audioButtonDetalles.load();
 
-      // 1. Cargar la lista de dispositivos para el desplegable
+      // Cargar la lista de dispositivos
       const dispositivosRef = ref(db, 'dispositivos');
       onValue(dispositivosRef, (snapshot) => {
         const data = snapshot.val();
@@ -68,7 +67,7 @@ export class AdministracionPedidosComponent implements OnInit {
         }
       });
 
-      // 2. Cargar los pedidos globales filtrados por el técnico
+      // Cargar los pedidos globales filtrados por el técnico
       const usuariosRef = ref(db, `usuarios`);
       onValue(usuariosRef, (snapshot) => {
         const usuarios = snapshot.val();
@@ -100,7 +99,7 @@ export class AdministracionPedidosComponent implements OnInit {
   async asignarPedido(): Promise<void> {
     const tecnicoUid = this.userService.getUser()?.uid;
 
-    if (!this.correoDestino || !this.nuevoDispositivo || !tecnicoUid) return;
+    if (!this.correoDestino || !this.idDispositivo || !tecnicoUid) return;
 
     this.procesando = true;
     this.mensajeEstado = 'Buscando usuario en Firebase Auth...';
@@ -114,18 +113,24 @@ export class AdministracionPedidosComponent implements OnInit {
 
       this.mensajeEstado = 'Usuario validado. Registrando asignación y pedido...';
 
+      // 1. Obtener el nombre real del dispositivo a partir de su ID
+      const dispSeleccionado = this.dispositivosDisponibles.find(d => d.id === this.idDispositivo);
+      const nombreRealDispositivo = dispSeleccionado ? dispSeleccionado.nombre : 'Dispositivo Desconocido';
+
+      // 2. Generar IDs únicos para el pedido y para la cola de procesamiento
       const nuevoPedidoId = push(ref(db, `usuarios/${uidDestino}/pedidos`)).key;
+      const idColaProcesamiento = push(ref(db, `cola_procesamiento/ofertas`)).key;
+      
       const updates: any = {};
 
-      // Construir la descripción final anidando la personalización si el técnico ha escrito algo
       let descripcionFinal = "Pedido manual creado desde el panel técnico";
       if (this.opcionesPersonalizacion && this.opcionesPersonalizacion.trim() !== '') {
         descripcionFinal += ` - Opciones de personalización: ${this.opcionesPersonalizacion}`;
       }
 
-      // Inyectar el nuevo pedido
+      // 3A. Inyectar el nuevo pedido en el perfil del usuario (con su nombre bonito)
       updates[`usuarios/${uidDestino}/pedidos/${nuevoPedidoId}`] = {
-        nombre: this.nuevoDispositivo, // Aquí llegará el nombre completo del <select>
+        nombre: nombreRealDispositivo, 
         descripcion: descripcionFinal,
         estado: [
           { codEstado: 2, descripcion: "Pedido anotado en empresa de paquetería" },
@@ -137,15 +142,23 @@ export class AdministracionPedidosComponent implements OnInit {
         asignado_por: tecnicoUid 
       };
 
+      // 3B. Sobreescribir el técnico asignado en el perfil raíz
       updates[`usuarios/${uidDestino}/tecnico_asignado`] = tecnicoUid;
 
+      // 3C. Enviar la tarea a la cola de procesamiento (con la clave cruda)
+      updates[`cola_procesamiento/ofertas/${idColaProcesamiento}`] = {
+        uid_fb: uidDestino,
+        origin: "web",
+        nombre: this.idDispositivo
+      };
+
+      // 4. Ejecutar todas las actualizaciones de forma atómica
       await update(ref(db), updates);
 
       this.mensajeEstado = '✅ Pedido y técnico asignados correctamente.';
       
-      // Limpiar el formulario tras el éxito
       this.correoDestino = '';
-      this.nuevoDispositivo = '';
+      this.idDispositivo = '';
       this.opcionesPersonalizacion = '';
 
       setTimeout(() => this.toggleFormulario(), 2000);

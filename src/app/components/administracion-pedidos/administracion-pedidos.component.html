@@ -21,18 +21,18 @@
             <div class="form-group">
                 <input type="email" placeholder="Correo del usuario destino" [(ngModel)]="correoDestino" [disabled]="procesando">
                 
-                <!-- Sustituido el input de texto por el menú desplegable (select) -->
-                <select [(ngModel)]="nuevoDispositivo" [disabled]="procesando">
+                <!-- Ahora el ngModel se enlaza a idDispositivo y el value captura disp.id -->
+                <select [(ngModel)]="idDispositivo" [disabled]="procesando">
                     <option value="" disabled selected>Selecciona un dispositivo...</option>
                     @for (disp of dispositivosDisponibles; track disp.id) {
-                        <option [value]="disp.nombre">{{ disp.nombre }}</option>
+                        <!-- Guardamos la clave (disp.id) pero mostramos el nombre bonito (disp.nombre) -->
+                        <option [value]="disp.id">{{ disp.nombre }}</option>
                     }
                 </select>
 
-                <!-- Nuevo input opcional para las opciones de personalización -->
                 <input type="text" placeholder="Opciones de personalización (Opcional)" [(ngModel)]="opcionesPersonalizacion" [disabled]="procesando">
                 
-                <button class="button btn-accion" (click)="asignarPedido()" [disabled]="procesando || !correoDestino || !nuevoDispositivo">
+                <button class="button btn-accion" (click)="asignarPedido()" [disabled]="procesando || !correoDestino || !idDispositivo">
                     {{ procesando ? 'Procesando...' : 'Asignar Pedido' }}
                 </button>
             </div>
