@@ -149,7 +149,7 @@ export class AdministracionPedidosComponent implements OnInit {
       updates[`cola_procesamiento/ofertas/${idColaProcesamiento}`] = {
         uid_fb: uidDestino,
         origin: "web",
-        nombre: this.idDispositivo
+        name: this.idDispositivo
       };
 
       // 4. Ejecutar todas las actualizaciones de forma atómica
