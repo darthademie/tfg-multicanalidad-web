@@ -15,46 +15,25 @@ pipeline {
         stage('1. Obtener Código') {
             steps {
                 echo 'Descargando código desde GitHub...'
-                // Descarga la rama 'main' de tu repositorio público
                 git branch: 'main', url: 'https://github.com/darthademie/tfg-multicanalidad-web.git'
             }
         }
 
-        stage('2. Construir Imagen') {
+        stage('2. Construir y Subir a Docker Hub') {
             steps {
-                echo "Construyendo la imagen ${DOCKER_IMAGE}:${TAG}..."
-                // Construimos la imagen y le asignamos dos etiquetas: la versión exacta y 'latest'
-                sh "docker build --load -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
-
-                sh "docker images"
-
-                // Forzamos la etiqueta absoluta saltándonos la restricción de Podman (moby/buildkit)
-                sh "docker tag localhost/${DOCKER_IMAGE}:${TAG} docker.io/${DOCKER_IMAGE}:${TAG}"
-                sh "docker tag localhost/${DOCKER_IMAGE}:latest docker.io/${DOCKER_IMAGE}:latest"
-            }
-        }
-
-        stage('3. Subir a Docker Hub') {
-            steps {
-                echo 'Autenticando en Docker Hub y subiendo imágenes...'
-                // withCredentials inyecta tu usuario y contraseña de forma ultra-segura para que no salgan en los logs
                 withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDS, passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER')]) {
+                    echo 'Autenticando en Docker Hub...'
                     sh "echo \$DOCKERHUB_PASS | docker login -u \$DOCKERHUB_USER --password-stdin"
                     
-                    // Hacemos el push usando explícitamente docker.io
-                    sh "docker push docker.io/${DOCKER_IMAGE}:${TAG} docker.io"
-                    sh "docker push docker.io/${DOCKER_IMAGE}:latest docker.io"
+                    echo "Compilando y subiendo directamente ${DOCKER_IMAGE}:${TAG} con BuildKit..."
+                    sh "docker build --push -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
                 }
             }
         }
     }
-
     post {
         always {
-            echo 'Limpiando el entorno de trabajo...'
-            // Borramos las imágenes locales del nodo para que el disco de Jenkins no se llene con los días
-            sh "docker rmi docker.io/${DOCKER_IMAGE}:${TAG} || true"
-            sh "docker rmi docker.io/${DOCKER_IMAGE}:latest || true"
+            echo 'Limpiando el workspace de Jenkins...'
             cleanWs() // Borra los ficheros clonados del espacio de trabajo
         }
         success {
