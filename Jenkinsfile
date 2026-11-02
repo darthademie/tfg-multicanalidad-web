@@ -26,11 +26,11 @@ pipeline {
                 // Construimos la imagen y le asignamos dos etiquetas: la versión exacta y 'latest'
                 sh "docker build --load -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
 
+                sh "docker images"
+
                 // Forzamos la etiqueta absoluta saltándonos la restricción de Podman (moby/buildkit)
                 sh "docker tag localhost/${DOCKER_IMAGE}:${TAG} docker.io/${DOCKER_IMAGE}:${TAG}"
                 sh "docker tag localhost/${DOCKER_IMAGE}:latest docker.io/${DOCKER_IMAGE}:latest"
-
-                sh "docker images"
             }
         }
 
