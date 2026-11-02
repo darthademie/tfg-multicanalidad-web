@@ -6,7 +6,7 @@ pipeline {
         // ID de la credencial que crearemos en Jenkins para tu Docker Hub
         DOCKERHUB_CREDS = 'dockerhub-darthademie'
         // Añadir docker.io/ explícitamente para evitar conflictos con Podman
-        DOCKER_IMAGE = 'docker.io/darthademie/tfg-multicanalidad-web'
+        DOCKER_IMAGE = 'darthademie/tfg-multicanalidad-web'
         // Usamos el número de build de Jenkins (1, 2, 3...) como versión única
         TAG = "1.${env.BUILD_NUMBER}"
     }
@@ -25,6 +25,7 @@ pipeline {
                 echo "Construyendo la imagen ${DOCKER_IMAGE}:${TAG}..."
                 // Construimos la imagen y le asignamos dos etiquetas: la versión exacta y 'latest'
                 sh "docker build -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
+                sh "docker images"
             }
         }
 
