@@ -7,7 +7,7 @@ pipeline {
         DOCKERHUB_CREDS = 'dockerhub-darthademie' 
         DOCKER_IMAGE = 'darthademie/tfg-multicanalidad-web'
         // Usamos el número de build de Jenkins (1, 2, 3...) como versión única
-        TAG = "v${env.BUILD_NUMBER}"
+        TAG = "1.${env.BUILD_NUMBER}"
     }
 
     stages {
