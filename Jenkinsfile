@@ -25,6 +25,11 @@ pipeline {
                 echo "Construyendo la imagen ${DOCKER_IMAGE}:${TAG}..."
                 // Construimos la imagen y le asignamos dos etiquetas: la versión exacta y 'latest'
                 sh "docker build --load -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
+
+                // Forzamos la etiqueta absoluta saltándonos la restricción de Podman (moby/buildkit)
+                sh "docker tag ${DOCKER_IMAGE}:${TAG} docker.io/${DOCKER_IMAGE}:${TAG}"
+                sh "docker tag ${DOCKER_IMAGE}:latest docker.io/${DOCKER_IMAGE}:latest"
+
                 sh "docker images"
             }
         }
@@ -36,8 +41,9 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDS, passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER')]) {
                     sh "echo \$DOCKERHUB_PASS | docker login -u \$DOCKERHUB_USER --password-stdin"
                     
-                    sh "docker push ${DOCKER_IMAGE}:${TAG}"
-                    sh "docker push ${DOCKER_IMAGE}:latest"
+                    // Hacemos el push usando explícitamente docker.io
+                    sh "docker push docker.io/${DOCKER_IMAGE}:${TAG}"
+                    sh "docker push docker.io/${DOCKER_IMAGE}:latest"
                 }
             }
         }
