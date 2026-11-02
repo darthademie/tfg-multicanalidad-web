@@ -25,6 +25,7 @@ pipeline {
                 echo "Construyendo la imagen ${DOCKER_IMAGE}:${TAG}..."
                 // Construimos la imagen y le asignamos dos etiquetas: la versión exacta y 'latest'
                 sh "docker build --load -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
+                sh "docker images"
             }
         }
 
