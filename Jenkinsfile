@@ -42,8 +42,8 @@ pipeline {
                     sh "echo \$DOCKERHUB_PASS | docker login -u \$DOCKERHUB_USER --password-stdin"
                     
                     // Hacemos el push usando explícitamente docker.io
-                    sh "docker push docker.io/${DOCKER_IMAGE}:${TAG}"
-                    sh "docker push docker.io/${DOCKER_IMAGE}:latest"
+                    sh "docker push docker.io/${DOCKER_IMAGE}:${TAG} docker.io"
+                    sh "docker push docker.io/${DOCKER_IMAGE}:latest docker.io"
                 }
             }
         }
@@ -53,8 +53,8 @@ pipeline {
         always {
             echo 'Limpiando el entorno de trabajo...'
             // Borramos las imágenes locales del nodo para que el disco de Jenkins no se llene con los días
-            sh "docker rmi ${DOCKER_IMAGE}:${TAG} || true"
-            sh "docker rmi ${DOCKER_IMAGE}:latest || true"
+            sh "docker rmi docker.io/${DOCKER_IMAGE}:${TAG} || true"
+            sh "docker rmi docker.io/${DOCKER_IMAGE}:latest || true"
             cleanWs() // Borra los ficheros clonados del espacio de trabajo
         }
         success {
