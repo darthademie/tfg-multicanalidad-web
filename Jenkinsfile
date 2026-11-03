@@ -19,50 +19,49 @@ pipeline {
             }
         }
 
-        stage('2. Validar Commit') {
-        steps {
-            script {
-                def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                if (commitMessage.contains('[skip ci]')) {
-                    echo "Se ha detectado '[skip ci]' en el mensaje del commit. Abortando ejecución para evitar bucle infinito."
-                    currentBuild.result = 'SUCCESS' // Lo marcamos como verde para no ensuciar el historial
-                    error('Ejecución detenida por skip ci') // Detiene el pipeline limpiamente
+        stage('Pipeline de Integración Continua (CI)') {
+            when {
+                expression {
+                    // Extraemos el mensaje y devolvemos 'true' SOLO si NO contiene la etiqueta
+                    def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    return !commitMessage.contains('[skip ci]')
                 }
             }
-        }
-    }
-
-        stage('3. Construir y Subir a Docker Hub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDS, passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER')]) {
-                    echo 'Autenticando en Docker Hub...'
-                    sh "echo \$DOCKERHUB_PASS | docker login -u \$DOCKERHUB_USER --password-stdin"
-                    
-                    echo "Compilando y subiendo directamente ${DOCKER_IMAGE}:${TAG} con BuildKit..."
-                    sh "docker build --push -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
+            
+            stages {
+                stage('2. Construir y Subir a Docker Hub') {
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDS, passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER')]) {
+                            echo 'Autenticando en Docker Hub...'
+                            sh "echo \$DOCKERHUB_PASS | docker login -u \$DOCKERHUB_USER --password-stdin"
+                            
+                            echo "Compilando y subiendo directamente ${DOCKER_IMAGE}:${TAG} con BuildKit..."
+                            sh "docker build --push -t ${DOCKER_IMAGE}:${TAG} -t ${DOCKER_IMAGE}:latest ."
+                        }
+                    }
                 }
-            }
-        }
 
-        stage('4. Actualizar Manifiestos (GitOps)') {
-            steps {
-                echo 'Actualizando git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main.yaml con la nueva versión...'
-                
-                withCredentials([usernamePassword(credentialsId: 'github-darthademie', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
-                    sh """
-                    # 1. Configurar identidad de Git
-                    git config --global user.email "jenkins@teleupm.com"
-                    git config --global user.name "Jenkins CI"
-                    
-                    # 2. Modificar el archivo teleupm-front-deployment.yaml
-                    # Esto busca la línea que empieza por 'image: docker.io/darthademie...' y le cambia el tag
-                    sed -i 's|image: darthademie/tfg-multicanalidad-web:.*|image: darthademie/tfg-multicanalidad-web:${TAG}|g' k8s/teleupm-front-deployment.yaml
-                    
-                    # 3. Hacer Commit y Push
-                    git add k8s/teleupm-front-deployment.yaml
-                    git commit -m "GitOps: Despliegue automático de versión ${TAG} [skip ci]"
-                    git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main
-                    """
+                stage('3. Actualizar Manifiestos (GitOps)') {
+                    steps {
+                        echo 'Actualizando git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main.yaml con la nueva versión...'
+                        
+                        withCredentials([usernamePassword(credentialsId: 'github-darthademie', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                            sh """
+                            # 1. Configurar identidad de Git
+                            git config --global user.email "jenkins@teleupm.com"
+                            git config --global user.name "Jenkins CI"
+                            
+                            # 2. Modificar el archivo teleupm-front-deployment.yaml
+                            # Esto busca la línea que empieza por 'image: docker.io/darthademie...' y le cambia el tag
+                            sed -i 's|image: darthademie/tfg-multicanalidad-web:.*|image: darthademie/tfg-multicanalidad-web:${TAG}|g' k8s/teleupm-front-deployment.yaml
+                            
+                            # 3. Hacer Commit y Push
+                            git add k8s/teleupm-front-deployment.yaml
+                            git commit -m "gitops: Despliegue automático de versión ${TAG} [skip ci]"
+                            git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main
+                            """
+                        }
+                    }
                 }
             }
         }
