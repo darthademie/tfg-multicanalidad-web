@@ -3,9 +3,9 @@ pipeline {
     agent any 
 
     environment {
-        // ID de la credencial que crearemos en Jenkins para tu Docker Hub
+        // ID de la credencial de Docker Hub
         DOCKERHUB_CREDS = 'dockerhub-darthademie'
-        // Añadir docker.io/ explícitamente para evitar conflictos con Podman
+        // Imagen a generar
         DOCKER_IMAGE = 'darthademie/tfg-multicanalidad-web'
         // Usamos el número de build de Jenkins (1, 2, 3...) como versión única
         TAG = "1.${env.BUILD_NUMBER}"
@@ -24,10 +24,14 @@ pipeline {
                 expression {
                     // Extraemos el mensaje y devolvemos 'true' SOLO si NO contiene la etiqueta
                     def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    if (commitMessage.contains('[skip ci]')) {
+                        echo "Se ha detectado '[skip ci]'. Abortando ejecución para evitar bucle infinito."
+                        currentBuild.result = 'ABORTED'
+                    }
                     return !commitMessage.contains('[skip ci]')
                 }
             }
-            
+
             stages {
                 stage('2. Construir y Subir a Docker Hub') {
                     steps {
@@ -52,7 +56,7 @@ pipeline {
                             git config --global user.name "Jenkins CI"
                             
                             # 2. Modificar el archivo teleupm-front-deployment.yaml
-                            # Esto busca la línea que empieza por 'image: docker.io/darthademie...' y le cambia el tag
+                            # Esto busca la línea que empieza por 'image: darthademie...' y le cambia el tag
                             sed -i 's|image: darthademie/tfg-multicanalidad-web:.*|image: darthademie/tfg-multicanalidad-web:${TAG}|g' k8s/teleupm-front-deployment.yaml
                             
                             # 3. Hacer Commit y Push
