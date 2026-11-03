@@ -19,7 +19,20 @@ pipeline {
             }
         }
 
-        stage('2. Construir y Subir a Docker Hub') {
+        stage('2. Validar Commit') {
+        steps {
+            script {
+                def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                if (commitMessage.contains('[skip ci]')) {
+                    echo "Se ha detectado '[skip ci]' en el mensaje del commit. Abortando ejecución para evitar bucle infinito."
+                    currentBuild.result = 'SUCCESS' // Lo marcamos como verde para no ensuciar el historial
+                    error('Ejecución detenida por skip ci') // Detiene el pipeline limpiamente
+                }
+            }
+        }
+    }
+
+        stage('3. Construir y Subir a Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDS, passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER')]) {
                     echo 'Autenticando en Docker Hub...'
@@ -31,7 +44,7 @@ pipeline {
             }
         }
 
-        stage('3. Actualizar Manifiestos (GitOps)') {
+        stage('4. Actualizar Manifiestos (GitOps)') {
             steps {
                 echo 'Actualizando git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main.yaml con la nueva versión...'
                 
@@ -47,7 +60,7 @@ pipeline {
                     
                     # 3. Hacer Commit y Push
                     git add k8s/teleupm-front-deployment.yaml
-                    git commit -m "GitOps: Despliegue automático de versión ${TAG}"
+                    git commit -m "GitOps: Despliegue automático de versión ${TAG} [skip ci]"
                     git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main
                     """
                 }
