@@ -30,6 +30,29 @@ pipeline {
                 }
             }
         }
+
+        stage('3. Actualizar Manifiestos (GitOps)') {
+            steps {
+                echo 'Actualizando deployment.yaml con la nueva versión...'
+                
+                withCredentials([usernamePassword(credentialsId: 'github-darthademie', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                    sh """
+                    # 1. Configurar identidad de Git
+                    git config --global user.email "jenkins@teleupm.com"
+                    git config --global user.name "Jenkins CI"
+                    
+                    # 2. Modificar el archivo deployment.yaml (ajusta la ruta si están en una carpeta)
+                    # Esto busca la línea que empieza por 'image: docker.io/darthademie...' y le cambia el tag
+                    sed -i 's|image: darthademie/tfg-multicanalidad-web:.*|image: darthademie/tfg-multicanalidad-web:${TAG}|g' deployment.yaml
+                    
+                    # 3. Hacer Commit y Push
+                    git add deployment.yaml
+                    git commit -m "GitOps: Despliegue automático de versión ${TAG}"
+                    git push https://${GIT_USER}:${GIT_PASS}@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main
+                    """
+                }
+            }
+        }
     }
     post {
         always {
