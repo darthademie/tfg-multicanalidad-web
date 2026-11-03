@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: front-container
-          image: darthademie/tfg-multicanalidad-web:1.0
+          image: darthademie/tfg-multicanalidad-web:1.21
           imagePullPolicy: Always
           ports:
             - containerPort: 80
