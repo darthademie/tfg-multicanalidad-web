@@ -60,17 +60,12 @@ pipeline {
                         """
 
                         echo 'Ejecutando escaneo Baseline de OWASP ZAP...'
-                        // catchError permite que el pipeline continúe aunque ZAP encuentre vulnerabilidades
                         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                             sh """
-                            # Damos permisos al workspace local para que ZAP pueda escribir el reporte HTML
-                            chmod 777 \$(pwd)
-                            
-                            # Lanzamos el contenedor oficial de ZAP contra nuestro contenedor web
-                            # El flag -I (Ignore) hace que lance warnings pero no aborte el pipeline violentamente
-                            docker run --rm --network tfg-sec-net \
-                                -v \$(pwd):/zap/wrk/:rw \
-                                -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+                            # SOLUCIÓN DooD: Quitamos el volumen (-v) y el flag --rm.
+                            # Le damos el nombre 'zap-scanner' para poder referirnos a él luego.
+                            docker run --name zap-scanner --network tfg-sec-net \
+                                ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
                                 -t http://web-target:80 \
                                 -r zap-report.html -I
                             """
@@ -78,9 +73,20 @@ pipeline {
                     }
                     post {
                         always {
-                            echo 'Apagando entorno efímero y publicando reporte...'
-                            sh 'docker stop web-target || true'
-                            // Guarda el reporte en Jenkins para que puedas descargarlo desde la interfaz
+                            echo 'Extrayendo reporte, apagando entorno y limpiando...'
+                            sh """
+                            # 1. Rescatamos el HTML desde el contenedor de ZAP al workspace local
+                            # (funciona incluso si el contenedor ha fallado/terminado)
+                            docker cp zap-scanner:/zap/wrk/zap-report.html ./zap-report.html || true
+                            
+                            # 2. Destruimos el contenedor de ZAP de forma manual
+                            docker rm zap-scanner || true
+                            
+                            # 3. Apagamos el contenedor de tu web (como tiene --rm, se borra solo)
+                            docker stop web-target || true
+                            """
+                            
+                            // Guarda el reporte extraído
                             archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: true
                         }
                     }
