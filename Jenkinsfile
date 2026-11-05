@@ -49,22 +49,22 @@ pipeline {
                     steps {
                         echo 'Levantando entorno efímero para auditoría DAST...'
                         sh """
-                        # Creamos una red aislada para el test (ignora el error si ya existe)
+                        # Creamos una red aislada para el test
                         docker network create tfg-sec-net || true
                         
                         # Levantamos la imagen recién compilada
                         docker run -d --rm --name web-target --network tfg-sec-net ${DOCKER_IMAGE}:${TAG}
                         
-                        # Damos 5 segundos para que el servidor web interno arranque correctamente
                         sleep 5
                         """
 
                         echo 'Ejecutando escaneo Baseline de OWASP ZAP...'
                         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                             sh """
-                            # SOLUCIÓN DooD: Quitamos el volumen (-v) y el flag --rm.
-                            # Le damos el nombre 'zap-scanner' para poder referirnos a él luego.
+                            # TRUCO DooD: Añadimos '-v /zap/wrk' (Volumen Anónimo).
+                            # ZAP se cree que tiene un volumen externo y nos deja escribir el reporte.
                             docker run --name zap-scanner --network tfg-sec-net \
+                                -v /zap/wrk \
                                 ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
                                 -t http://web-target:80 \
                                 -r zap-report.html -I
@@ -76,13 +76,12 @@ pipeline {
                             echo 'Extrayendo reporte, apagando entorno y limpiando...'
                             sh """
                             # 1. Rescatamos el HTML desde el contenedor de ZAP al workspace local
-                            # (funciona incluso si el contenedor ha fallado/terminado)
                             docker cp zap-scanner:/zap/wrk/zap-report.html ./zap-report.html || true
                             
-                            # 2. Destruimos el contenedor de ZAP de forma manual
-                            docker rm zap-scanner || true
+                            # 2. Destruimos el contenedor de ZAP Y su volumen anónimo (-v)
+                            docker rm -v zap-scanner || true
                             
-                            # 3. Apagamos el contenedor de tu web (como tiene --rm, se borra solo)
+                            # 3. Apagamos el contenedor de tu web
                             docker stop web-target || true
                             """
                             
