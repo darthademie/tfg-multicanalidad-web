@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ref, onValue } from 'firebase/database'
+import { Analytics, getAnalytics, logEvent } from "firebase/analytics";
+
 import { db } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { HorizontalMenuComponent } from '../../common/horizontal-menu/horizontal-menu.component';
@@ -8,6 +10,7 @@ import { config } from '../../../config/page-config';
 import { LogoutButtonComponent } from '../../common/logout-button/logout-button.component';
 import { UserService } from '../../shared/services/user.service';
 import { Pedido } from '../../models/usuario-firebase.model';
+import { plataforma } from '../../shared/constants/defines';
 
 @Component({
   selector: 'app-mis-pedidos',
@@ -23,6 +26,8 @@ export class MisPedidosComponent {
     private router: Router,
     private userService: UserService
   ) {}
+
+  analytics: Analytics = getAnalytics();
 
   pedidos: Record<string, Pedido>;
 
@@ -42,6 +47,15 @@ export class MisPedidosComponent {
 
   verDetalles(id_pedido: string): void {
     this.audioButtonDetalles.play();
+    const uid: string | undefined = this.userService.getUser()?.uid;
+    if (uid) {
+      // Registramos el journey del usuario al ver los detalles de su pedido
+      logEvent(this.analytics, 'dispositivo_detalle', {
+        motivo: 'click_lista_pedidos',
+        uid_fb: uid,
+        plataforma: plataforma // Buena práctica para filtrar en consola
+      });
+    }
     this.router.navigate([config.detalles_pedido.name], { queryParams: { id_pedido: id_pedido } });
   }
 

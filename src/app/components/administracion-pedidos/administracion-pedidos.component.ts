@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ref, onValue, push, update } from 'firebase/database'; 
 import { getFunctions, httpsCallable } from 'firebase/functions';
+import { Analytics, getAnalytics, logEvent } from "firebase/analytics";
 import { db } from '../../../environments/environment';
 import { config } from '../../../config/page-config';
 
@@ -11,6 +12,7 @@ import { HorizontalMenuComponent } from '../../common/horizontal-menu/horizontal
 import { LogoutButtonComponent } from '../../common/logout-button/logout-button.component';
 import { Pedido } from '../../models/usuario-firebase.model';
 import { UserService } from '../../shared/services/user.service'; 
+import { plataforma } from '../../shared/constants/defines';
 
 interface PedidoGlobal extends Pedido {
   idPedido: string;
@@ -31,6 +33,8 @@ interface Dispositivo {
   styleUrl: './administracion-pedidos.component.scss'
 })
 export class AdministracionPedidosComponent implements OnInit {
+
+  analytics: Analytics = getAnalytics();
 
   pedidosGlobales: PedidoGlobal[] = [];
   dispositivosDisponibles: Dispositivo[] = []; 
@@ -156,6 +160,13 @@ export class AdministracionPedidosComponent implements OnInit {
       await update(ref(db), updates);
 
       this.mensajeEstado = '✅ Pedido y técnico asignados correctamente.';
+
+      // Registramos el journey del técnico
+      logEvent(this.analytics, 'dispositivo_pedido', {
+        motivo: 'asignacion_tecnico',
+        uid_fb: uidDestino,
+        plataforma: plataforma // Buena práctica para filtrar en consola
+      });
       
       this.correoDestino = '';
       this.idDispositivo = '';
