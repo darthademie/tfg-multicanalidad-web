@@ -12,7 +12,7 @@ import { config } from '../../../../config/page-config';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent {
 
   formReg: FormGroup;
 
@@ -27,14 +27,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
-  }
-
-  ngOnInit(): void {
-    
-  }
-
-  ngOnDestroy(): void {
-    
   }
 
   onSubmit() {
