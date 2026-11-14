@@ -18,8 +18,7 @@ export class RegisterComponent {
 
   constructor(
     private userService: UserService,
-    private router: Router,
-    @Inject(DOCUMENT) private document: Document
+    private router: Router
   ) {
     this.formReg = new FormGroup({
       nombre: new FormControl('', Validators.required),
