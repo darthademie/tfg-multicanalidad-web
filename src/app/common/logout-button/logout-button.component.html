@@ -1,4 +1,28 @@
 <ul>
     <li>{{ emailName }}</li>
-    <li><button (click)="onClick()" class="btn btn-outline-danger">Cerrar sesión</button></li>
+    <li>
+        <button (click)="onClick()" class="btn btn-outline-danger">Cerrar sesión</button>
+    </li>
+    
+    @if (showDeleteAccount) {
+        <li>
+            <button (click)="abrirModal()" class="btn btn-danger delete-btn">Borrar cuenta</button>
+        </li>
+    }
 </ul>
+
+<!-- MODAL PERSONALIZADO -->
+@if (mostrarModalBorrado) {
+    <div class="modal-backdrop">
+        <div class="modal-box">
+            <h3>Eliminar cuenta</h3>
+            <br>
+            <p>¿Estás seguro de que deseas borrar tu cuenta para siempre? Se eliminarán todos tus datos, pedidos y tarifas actuales. <br><br> Esta acción no se puede deshacer.</p>
+            
+            <div class="modal-actions">
+                <button class="btn btn-secondary modal-btn" (click)="cerrarModal()">Cancelar</button>
+                <button class="btn btn-danger modal-btn" (click)="confirmarBorrado()">Sí, borrar cuenta</button>
+            </div>
+        </div>
+    </div>
+}

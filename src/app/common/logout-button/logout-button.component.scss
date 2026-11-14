@@ -6,7 +6,7 @@ ul {
     overflow: hidden;
     background-color: #FFFFFF;
     margin-right: 70px;
-  }
+}
 
 ul li {
     display: block; /* Hace que el enlace sea un bloque para que pueda tener dimensiones */
@@ -15,10 +15,79 @@ ul li {
     text-align: center;
     text-decoration: none;
     float: left;
-  }
+}
 
 ul :first-child {
     padding-top: 10px;
     padding-bottom: 10px;
     padding-right: 15px;
+}
+
+/* NUEVO: Damos margen izquierdo para separarlo del botón de cerrar sesión y forzamos el fondo rojo */
+.delete-btn {
+    margin-left: 10px;
+    background-color: #dc3545; /* Rojo sólido */
+    color: white;
+    border-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* =========================================
+   ESTILOS DEL MODAL DE CONFIRMACIÓN
+   ========================================= */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65); /* Fondo un poquito oscurecido */
+    z-index: 9999; /* Por encima de la navbar y el resto de la web */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Bloquea la selección de texto de los elementos que queden de fondo */
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.modal-box {
+    background-color: #ffffff;
+    padding: 30px;
+    max-width: 700px;
+    width: 90%;
+    
+    /* Sombreado elegante */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+    
+    /* Picos totalmente cuadrados */
+    border-radius: 0 !important; 
+    
+    /* Volvemos a permitir seleccionar el texto dentro de la ventana por si quiere copiar algo */
+    user-select: auto;
+    -webkit-user-select: auto;
+}
+
+.modal-box h3 {
+    margin-top: 0;
+    color: #333333;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.modal-btn {
+    /* Forzamos que los botones de dentro del modal también sean cuadrados para ir a juego */
+    border-radius: 0 !important;
+    padding: 8px 20px;
 }
