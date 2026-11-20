@@ -61,6 +61,9 @@ export class DetallesPedidoComponent {
     // Añadimos el callback de error para capturar bloqueos de las Reglas de Seguridad
     onValue(pedidoRef, (snapshot) => {
       if (snapshot.exists()) {
+        // MEDIDA (rama medidas): T1 de la sincronización en tiempo real. Momento en que la web
+        // recibe el cambio de estado del pedido. Marca de tiempo Unix en ms (UTC).
+        console.log(`[MEDIDA] T1_estado_recibido_web ts_ms=${Date.now()} pedido=${idPedido}`);
         this.detallesPedido = snapshot.val();
         console.log('Detalles de pedido actualizados:', this.detallesPedido);
       } else {
