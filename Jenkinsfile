@@ -15,7 +15,7 @@ pipeline {
         stage('1. Obtener Código') {
             steps {
                 echo 'Descargando código desde GitHub...'
-                git branch: 'main', url: 'https://github.com/darthademie/tfg-multicanalidad-web.git'
+                git branch: 'demo', url: 'https://github.com/darthademie/tfg-multicanalidad-web.git'
             }
         }
 
@@ -121,7 +121,7 @@ pipeline {
                             # 3. Hacer Commit y Push
                             git add k8s/teleupm-front-deployment.yaml
                             git commit -m "gitops: Despliegue automático de versión ${TAG} [skip ci]"
-                            git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:main
+                            git push https://\$GIT_USER:\$GIT_PASS@github.com/darthademie/tfg-multicanalidad-web.git HEAD:demo
                             """
                         }
                     }
